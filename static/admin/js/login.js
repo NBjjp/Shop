@@ -10,7 +10,7 @@ var app={
         $.get("/admin/captcha?t="+Math.random(),function(response){
             console.log(response)
             $("#captchaId").val(response.captchaId)
-            $("#captchaImg").attr("src",response.captchaImage)
+            $("#captchaImg").attr("src",response.captchaImg)
         })
     },
     captchaImgChage:function(){

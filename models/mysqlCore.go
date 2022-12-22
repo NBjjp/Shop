@@ -3,6 +3,7 @@ package models
 //https://gorm.io/zh_CN/docs/connecting_to_the_database.html
 import (
 	"fmt"
+	"gorm.io/gorm/logger"
 	"os"
 
 	"gopkg.in/ini.v1"
@@ -32,6 +33,7 @@ func init() {
 	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", user, password, ip, port, database)
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		QueryFields: true, //打印sql
+		Logger:      logger.Default.LogMode(logger.Info),
 		//SkipDefaultTransaction: true, //禁用事务
 	})
 	// DB.Debug()
