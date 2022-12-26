@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
+	"strconv"
 	"time"
 )
 
@@ -44,4 +45,16 @@ func Md5(str string) string {
 	h := md5.New()
 	io.WriteString(h, str)
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+//将string类型转换成int类型
+func Int(str string) (int, error) {
+	num, err1 := strconv.Atoi(str)
+	return num, err1
+}
+
+//将int类型转换成string类型
+func String(num int) string {
+	str := strconv.Itoa(num)
+	return str
 }

@@ -50,7 +50,7 @@ func (con LoginController) LoginOut(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	session.Delete("userinfo")
 	session.Save()
-	con.Success(ctx, "您已成功退出", "/admin/loginout")
+	con.Success(ctx, "您已成功退出", "/admin/login")
 }
 
 func (con LoginController) Captcha(ctx *gin.Context) {
