@@ -47,7 +47,7 @@ func (con RoleController) DoAdd(ctx *gin.Context) {
 		role.Title = title
 		role.Description = description
 		role.Status = 1
-		role.Addtime = int(models.GetUnix())
+		role.AddTime = int(models.GetUnix())
 		err := models.DB.Create(&role).Error
 		if err != nil {
 			con.Error(ctx, "增加角色失败，请重试", "/admin/role/add")

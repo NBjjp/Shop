@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"net/http"
 	"shop/models"
 )
@@ -24,7 +25,9 @@ func (con MainController) Index(ctx *gin.Context) {
 		json.Unmarshal([]byte(userinfoStr), &userinfoStruct)
 		//2、获取所有的权限
 		accessList := []models.Access{}
-		models.DB.Where("module_id=?", 0).Preload("AccessItem").Find(&accessList)
+		models.DB.Where("module_id=?", 0).Preload("AccessItem", func(db *gorm.DB) *gorm.DB {
+			return db.Order("access.sort DESC")
+		}).Order("sort DESC").Find(&accessList)
 		//3、获取当前角色拥有的权限 ，并把权限id放在一个map对象里面
 		roleAccess := []models.RoleAccess{}
 		models.DB.Where("role_id=?", userinfoStruct[0].RoleId).Find(&roleAccess)
@@ -56,4 +59,60 @@ func (con MainController) Index(ctx *gin.Context) {
 
 func (con MainController) Welcome(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "admin/main/welcome.html", gin.H{})
+}
+
+//公共修改状态的方法
+func (con MainController) ChangeStatus(ctx *gin.Context) {
+	id, err1 := models.Int(ctx.Query("id"))
+	if err1 != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "传入数据错误",
+		})
+		return
+	}
+	table := ctx.Query("table")
+	field := ctx.Query("field")
+	err2 := models.DB.Exec("update "+table+" set "+field+"=ABS("+field+"-1) where id=?", id).Error
+	if err2 != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "修改失败 请重试",
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "修改成功",
+	})
+}
+
+//公共修改状态的方法
+func (con MainController) ChangeNum(ctx *gin.Context) {
+	id, err := models.Int(ctx.Query("id"))
+	if err != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "传入的参数错误",
+		})
+		return
+	}
+
+	table := ctx.Query("table")
+	field := ctx.Query("field")
+	num := ctx.Query("num")
+
+	err1 := models.DB.Exec("update "+table+" set "+field+"="+num+" where id=?", id).Error
+	if err1 != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "修改数据失败",
+		})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"message": "修改成功",
+		})
+	}
+
 }

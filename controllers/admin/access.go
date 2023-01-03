@@ -140,6 +140,5 @@ func (con AccessController) Delete(c *gin.Context) {
 			models.DB.Delete(&access)
 			con.Success(c, "删除数据成功", "/admin/access")
 		}
-
 	}
 }

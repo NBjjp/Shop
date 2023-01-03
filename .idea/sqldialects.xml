@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/../Golang+Gin仿小米商城项目实战视频教程+微服务（Gin框架）-升级版/02 Gin小米商城实战/46 Gin仿小米商城项目商品分类的增删改查以及商品分类的自关联（43分34秒）/ginxiaomi.sql" dialect="MariaDB" />
+  </component>
+</project>

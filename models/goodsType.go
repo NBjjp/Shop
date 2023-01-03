@@ -1,6 +1,6 @@
 package models
 
-type Role struct {
+type GoodsType struct {
 	Id          int
 	Title       string
 	Description string
@@ -8,6 +8,6 @@ type Role struct {
 	AddTime     int
 }
 
-func (Role) TableName() string {
-	return "role"
+func (GoodsType) TableName() string {
+	return "goods_type"
 }
